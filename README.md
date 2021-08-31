@@ -192,7 +192,7 @@ HelloApiPath helloApiPath;
 ### Add endpoint(s) to KoolApi
 
 ```c++
-koolApi.on("hello", &helloApiPath); // Webserver reachable via '/api/hello'
+koolApi.on("hello", helloApiPath); // Webserver reachable via '/api/hello'
 ```
 
 ### Register with AsyncWebServer instance if using
