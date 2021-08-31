@@ -135,7 +135,7 @@ public:
    * @param request The request object
    * @param methodsAccepted bitwise accepted methods. eg  (API_METHOD_GET | API_METHOD_PUT)
    */
-  void process(ApiRequest &request, int methodsAccepted = (int)API_METHOD_ANY) const;
+  void process(ApiRequest &request, int methodsAccepted = (int)API_METHOD_ANY);
 
   /**
    * @brief Checks if the url supplied starts with the base url
@@ -190,7 +190,7 @@ protected:
   /**
    * Handler class list
    */
-  koolutils::LinkedList<KoolApiPath *> _handlerList;
+  koolutils::LinkedList<KoolApiPath*> _handlerList;
 
   /**
    * @brief If set will enable the describer on the uri specified
@@ -204,20 +204,20 @@ protected:
    * @param path Path to search for
    * @return ApiPath* || nullptr if not found
    */
-  KoolApiPath *_findHandler(const char *path) const;
+  KoolApiPath *_findHandler(const char *path);
 
   /**
    * @brief Adds options for describing the api
    * 
    * @param out 
    */
-  void _describeApi(JsonObject &out) const;
+  void _describeApi(JsonObject &out);
 
 private:
 };
 
 
-KoolApi::KoolApi(const char *urlBase) : _urlBase(urlBase), _handlerList(koolutils::LinkedList<KoolApiPath *>([](KoolApiPath *p) {}))
+KoolApi::KoolApi(const char *urlBase) : _urlBase(urlBase), _handlerList(koolutils::LinkedList<KoolApiPath*>())
 {
 }
 
@@ -227,7 +227,7 @@ KoolApi::~KoolApi()
 
 const size_t KoolApi::uriCount() const
 {
-  return _handlerList.length();
+  return _handlerList.size();
 }
 
 const char *const KoolApi::getUrlBase() const
@@ -268,7 +268,7 @@ void KoolApi::on(const char *uri, KoolApiPath &handler)
   _handlerList.add(&handler);
 }
 
-void KoolApi::process(ApiRequest &request, int methodsAccepted) const
+void KoolApi::process(ApiRequest &request, int methodsAccepted)
 {
   auto errParseCode = request.parse(_urlBase, _requestKey);
 
@@ -322,16 +322,16 @@ bool KoolApi::startsWithUriKey(const char *url) const
   return strncmp(url, _urlBase, strlen(_urlBase)) == 0;
 }
 
-KoolApiPath *KoolApi::_findHandler(const char *path) const
+KoolApiPath *KoolApi::_findHandler(const char *path)
 {
   if (path)
   {
 
-    for (auto handler : _handlerList)
+    for (uint8_t i = 0; i <_handlerList.size(); ++i)
     {
-      if (strncmp(handler->_path, path, strlen(path)) == 0)
+      if (strncmp(_handlerList[i]->_path, path, strlen(path)) == 0)
       {
-        return handler;
+        return _handlerList[i];
       }
     }
   }
@@ -339,15 +339,16 @@ KoolApiPath *KoolApi::_findHandler(const char *path) const
   return nullptr;
 }
 
-void KoolApi::_describeApi(JsonObject &out) const
+void KoolApi::_describeApi(JsonObject &out)
 {
   auto h = out.createNestedArray("handlers");
 
-  for (auto handler : _handlerList)
-  {
+    for (uint8_t i = 0; i <_handlerList.size(); ++i)
+    {
+
     JsonObject p = h.createNestedObject();
-    p["path"] = handler->_path;
-    handler->_createOptions(p, false);
+    p["path"] = _handlerList[i]->_path;
+    _handlerList[i]->_createOptions(p, false);
   }
 }
 

@@ -1,4 +1,4 @@
-# KoolApi
+# KoolApi (ESP8266/ESP32)
 
 ## What is it?
 
