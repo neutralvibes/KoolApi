@@ -1,0 +1,5 @@
+*.code-workspace
+main.cpp
+.pio
+.vscode
+platformio.ini
