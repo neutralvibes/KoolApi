@@ -1,4 +1,4 @@
-# KoolApi (ESP8266/ESP32)
+# KoolApi (ESP8266/ESP32) nolinkedlist version
 
 ## What is it?
 
