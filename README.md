@@ -1,4 +1,7 @@
-# KoolApi (ESP8266/ESP32) nolinkedlist version
+# KoolApi (ESP8266/ESP32) no linked list version
+
+Version to hard code number of endpoints without using a linked list.
+Testing only
 
 ## What is it?
 
