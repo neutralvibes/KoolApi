@@ -331,7 +331,7 @@ The data example *below* will send the request to the registered endpoint `"test
   koolApi.process(charRequest);
 ```
 
-### Basic Stream/Serial proccessing
+### Basic Stream/Serial processing
 
 This basic example shows reading a LF terminated string from Serial and returning the response.
 
@@ -353,4 +353,3 @@ This basic example shows reading a LF terminated string from Serial and returnin
 ## Using KoolApi?
 
 If you use KoolApi in your project feel free to let me know.
-

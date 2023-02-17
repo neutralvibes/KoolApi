@@ -1,5 +1,5 @@
 {
-    "name": "KoolApi for ESP8266 and ESP32",
+    "name": "KoolApi",
     "version": "1.0.0",
     "keywords": "Json, api",
     "description": "Json REST like api for ESP8266 & ESP32 devices utilising ArduinoJson for parsing and output",
@@ -10,7 +10,7 @@
     },
     "authors": [
         {
-            "name": "dbailey",
+            "name": "neutral",
             "email": "neutralvibes@gmail.com",
             "maintainer": true
         }
