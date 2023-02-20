@@ -1,8 +1,6 @@
 #ifndef __KOOLAPI_H__
 #define __KOOLAPI_H__
 
-
-
 /*
 
 https://restfulapi.net/resource-naming/
@@ -52,7 +50,8 @@ public:
    * 
    * @param urlBase uri to mount api on. Eg "/_api"
    */
-  KoolApi(const char *urlBase);
+
+  KoolApi(const char *urlBase, uint8_t pathMaxNum);
 
   virtual ~KoolApi();
 
@@ -190,7 +189,13 @@ protected:
   /**
    * Handler class list
    */
-  koolutils::LinkedList<KoolApiPath*> _handlerList;
+  KoolApiPath** _handlerList;
+
+  /**
+   * @brief The number of handlers used;
+   * 
+   */
+  uint8_t _handlersLength = 0;
 
   /**
    * @brief If set will enable the describer on the uri specified
@@ -217,7 +222,7 @@ private:
 };
 
 
-KoolApi::KoolApi(const char *urlBase) : _urlBase(urlBase), _handlerList(koolutils::LinkedList<KoolApiPath*>())
+KoolApi::KoolApi(const char *urlBase, uint8_t maxPathNum) : _urlBase(urlBase)
 {
 }
 
@@ -227,7 +232,7 @@ KoolApi::~KoolApi()
 
 const size_t KoolApi::uriCount() const
 {
-  return _handlerList.size();
+  return _handlersLength;
 }
 
 const char *const KoolApi::getUrlBase() const
@@ -264,8 +269,26 @@ const char *const KoolApi::getDesriberUri() const
 
 void KoolApi::on(const char *uri, KoolApiPath &handler)
 {
-  handler._path = uri;
-  _handlerList.add(&handler);
+    handler._path = uri;
+    KoolApiPath **replaceArr = new KoolApiPath*[_handlersLength + 1];
+
+    if (!_handlersLength)
+    {
+      replaceArr[0] = &handler;
+    }
+    else
+    {
+      for (int i = 0; i < _handlersLength; i++)
+      {
+        replaceArr[i] = _handlerList[i];
+      }
+      replaceArr[_handlersLength] = &handler;
+    }
+
+    _handlersLength++;
+    _handlerList = replaceArr;
+
+    // return _length;
 }
 
 void KoolApi::process(ApiRequest &request, int methodsAccepted)
@@ -327,7 +350,7 @@ KoolApiPath *KoolApi::_findHandler(const char *path)
   if (path)
   {
 
-    for (uint8_t i = 0; i <_handlerList.size(); ++i)
+    for (uint8_t i = 0; i <_handlersLength; ++i)
     {
       if (strncmp(_handlerList[i]->_path, path, strlen(path)) == 0)
       {
@@ -343,7 +366,7 @@ void KoolApi::_describeApi(JsonObject &out)
 {
   auto h = out.createNestedArray("handlers");
 
-    for (uint8_t i = 0; i <_handlerList.size(); ++i)
+    for (uint8_t i = 0; i <_handlersLength; ++i)
     {
 
     JsonObject p = h.createNestedObject();
