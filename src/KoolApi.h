@@ -51,7 +51,7 @@ public:
    * @param urlBase uri to mount api on. Eg "/_api"
    */
 
-  KoolApi(const char *urlBase, uint8_t pathMaxNum);
+  KoolApi(const char *urlBase);
 
   virtual ~KoolApi();
 
@@ -222,7 +222,7 @@ private:
 };
 
 
-KoolApi::KoolApi(const char *urlBase, uint8_t maxPathNum) : _urlBase(urlBase)
+KoolApi::KoolApi(const char *urlBase) : _urlBase(urlBase)
 {
 }
 
