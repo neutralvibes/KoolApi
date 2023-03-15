@@ -227,6 +227,10 @@ KoolApi::KoolApi(const char *urlBase) : _urlBase(urlBase)
 
 KoolApi::~KoolApi()
 {
+  for (int i = 0; i < _handlersLength; i++)
+  {
+    delete _handlerList[i];
+  }
 }
 
 const size_t KoolApi::uriCount() const
