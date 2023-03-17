@@ -2,11 +2,11 @@
 
 ## What is it?
 
-A relatively easy to use json api library utilising `ArduinoJson` for handling JSON  requests from EspAsyncWebserver and other sources for the ESP8266 & ESP32 devices.
+A relatively easy to use JSON API library utilising `ArduinoJson` for handling JSON  requests from EspAsyncWebserver and other sources for the ESP8266 & ESP32 devices.
 
 It is recommended you take a few minutes to read through this information before using it.
 
-> Inorder to use this library knowledge of working with [ArduinoJson v6](https://arduinojson.org/) is required.
+> In order to use this library knowledge of working with [ArduinoJson v6](https://arduinojson.org/) is required.
 
 ### Create one REST like api usable from multiple sources
 
@@ -20,30 +20,30 @@ I wanted separation of website design and api, with support for usage via other 
 
 #### A bit much?
 
-Perhaps this is a case of over engineering, I don't know, but it helps me to rapidly develop both simple and complex json based api interfaces for the ESP8266 & ESP32 devices, maybe it will help you too.
+Perhaps this is a case of over engineering, I don't know, but it helps me to rapidly develop both simple and complex JSON based API interfaces for the ESP8266 & ESP32 devices, maybe it will help you too.
 
 ### Dependencies
 
 * [ArduinoJson v6](https://arduinojson.org/v6/doc/installation/) - For encoding/decoding json data
 * [EspAsyncWebserver](https://github.com/me-no-dev/ESPAsyncWebServer) - Only if Webserver/Sockets are used.
 
-## About endpdoint Handlers
+## About endpoint Handlers
 
 * Each is grouped via a class inheriting from `KoolApiPath`
 * Can restrict char array available methods
 * Can automatically return request uri in response
-* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char arry data sources.
+* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char data sources.
 
 * Supplied with:-
   * Url params in `request->params`
-  * Parsed json body in `request->json`
+  * Parsed JSON body in `request->json`
   * A `JsonObject` output to return data
 
 ### Processing
 
 Input data is automatically parsed via `ArduinoJson` and passed to request handlers. Incorrectly formed data is responded to with a `400 Bad Request` error for you.
 
-When a request is processed it is passed to the relevant endpoint class handler. The handler is passed an `ApiRequest` containing the json body and any url params. A `JsonObject` output object is additionally supplied to the handler, which can be optionally used to return data to the client.
+When a request is processed it is passed to the relevant endpoint class handler. The handler is passed an `ApiRequest` containing the JSON body and any url params. A `JsonObject` output object is additionally supplied to the handler, which can be optionally used to return data to the client.
 
 ### Methods available
 
@@ -55,7 +55,7 @@ When a request is processed it is passed to the relevant endpoint class handler.
 
 ### Response status codes
 
-Response codes shoud be sent before you leave a handler. The response codes available are below.
+Response codes should be sent before you leave a handler. The response codes available are below.
 
 ```c++
   OK = 200,
@@ -132,7 +132,7 @@ The library by default uses `StaticJsonDocument` to hold JSON data
 * `StaticJsonDocument<1096>` for output
 * `StaticJsonDocument<800>` for input
 
-These values affect all JSON parsing. To override them define `KOOLAPI_MAX_OUT_SIZE` and/or `KOOLAPI_MAX_IN_SIZE` before including the libray.
+These values affect all JSON parsing. To override them define `KOOLAPI_MAX_OUT_SIZE` and/or `KOOLAPI_MAX_IN_SIZE` before including the library.
 
 ```c++
 // Change default JsonDocument sizes example
@@ -169,7 +169,7 @@ class HelloApiPath : public KoolApiPath
   void put(ApiRequest *request, JsonObject out)
   {
     // any parsed data is in request->json
-    JsonObject json = request->json;
+    auto json = request->json;
 
     String name = json["name"];
     int age = json["age"];
@@ -229,7 +229,7 @@ class HelloApiPath : public KoolApiPath
   // put requests
   void put(ApiRequest *request, JsonObject out)
   {
-    JsonObject json = request->json;
+    auto json = request->json;
     const char * name = json["name"];
 
     if (name) {
