@@ -111,7 +111,8 @@ koolApi.setUriKey("_uri");
 This will add the uri of the response into key `_uri` and place output data in the `data` key, as shown below
 
 ```json
-{"_uri": "sys",
+{
+  "_uri": "sys",
   "data": {
     "hostname": "MYHOST",
     "uptime": 32847
