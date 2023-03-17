@@ -1,3 +1,8 @@
+/**
+ * This example uses the same API for access
+ * via Serial & Webserver at the same time
+*/
+
 #include "ESPAsyncWebServer.h"
 #include "KoolApi.h"
 
