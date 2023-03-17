@@ -9,7 +9,7 @@ A relatively easy to use json api library utilising `ArduinoJson` for handling J
 
 It is recommended you take a few minutes to read through this information before using it.
 
-> Inorder to use this library knowledge of working with [ArduinoJson v6](https://arduinojson.org/) is required.
+> In order to use this library knowledge of working with [ArduinoJson v6](https://arduinojson.org/) is required.
 
 ### Create one REST like api usable from multiple sources
 
@@ -135,7 +135,7 @@ The library by default uses `StaticJsonDocument` to hold JSON data
 * `StaticJsonDocument<1096>` for output
 * `StaticJsonDocument<800>` for input
 
-These values affect all JSON parsing. To override them define `KOOLAPI_MAX_OUT_SIZE` and/or `KOOLAPI_MAX_IN_SIZE` before including the libray.
+These values affect all JSON parsing. To override them define `KOOLAPI_MAX_OUT_SIZE` and/or `KOOLAPI_MAX_IN_SIZE` before including the library.
 
 ```c++
 // Change default JsonDocument sizes example
@@ -172,7 +172,7 @@ class HelloApiPath : public KoolApiPath
   void put(ApiRequest *request, JsonObject out)
   {
     // any parsed data is in request->json
-    JsonObject json = request->json;
+    auto json = request->json;
 
     String name = json["name"];
     int age = json["age"];
@@ -232,7 +232,7 @@ class HelloApiPath : public KoolApiPath
   // put requests
   void put(ApiRequest *request, JsonObject out)
   {
-    JsonObject json = request->json;
+    auto json = request->json;
     const char * name = json["name"];
 
     if (name) {
