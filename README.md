@@ -35,7 +35,7 @@ Perhaps this is a case of over engineering, I don't know, but it helps me to rap
 * Each is grouped via a class inheriting from `KoolApiPath`
 * Can restrict char array available methods
 * Can automatically return request uri in response
-* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char arry data sources.
+* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char array data sources.
 
 * Supplied with:-
   * Url params in `request->params`
@@ -58,7 +58,7 @@ When a request is processed it is passed to the relevant endpoint class handler.
 
 ### Response status codes
 
-Response codes shoud be sent before you leave a handler. The response codes available are below.
+Response codes should be sent before you leave a handler. The response codes available are below.
 
 ```c++
   OK = 200,
