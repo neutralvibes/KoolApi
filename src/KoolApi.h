@@ -124,7 +124,7 @@ public:
    * @param uri uri path. Eg "/puppet"
    * @param handler uri handling class
    */
-  void on(const char *uri, KoolApiPath &handler);
+  KoolApi &on(const char *uri, KoolApiPath &handler);
 
   /**
    * @brief Process the request.
@@ -143,7 +143,7 @@ public:
    * @return true
    * @return false
    */
-  inline bool startsWithUriKey(const char *url) const;
+  bool startsWithUriKey(const char *url) const;
 
 #ifdef _ESPAsyncWebServer_H_
 
@@ -270,7 +270,7 @@ const char *const KoolApi::getDesriberUri() const
   return _describerUri;
 }
 
-void KoolApi::on(const char *uri, KoolApiPath &handler)
+KoolApi &KoolApi::on(const char *uri, KoolApiPath &handler)
 {
   handler._path = uri;
   KoolApiPath **replaceArr = new KoolApiPath *[_handlersLength + 1];
@@ -291,7 +291,7 @@ void KoolApi::on(const char *uri, KoolApiPath &handler)
   _handlersLength++;
   _handlerList = replaceArr;
 
-  // return _length;
+  return *this;
 }
 
 void KoolApi::process(ApiRequest &request, int methodsAccepted)
