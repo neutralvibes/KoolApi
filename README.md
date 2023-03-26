@@ -1,14 +1,19 @@
-# KoolApi (ESP8266/ESP32)
+# KoolApi (ESP8266/ESP32) no linked list version
+
+Version to hard code number of endpoints without using a linked list.
+Testing only
 
 ## What is it?
 
-A relatively easy to use JSON API library utilising `ArduinoJson` for handling JSON  requests from EspAsyncWebserver and other sources for the ESP8266 & ESP32 devices.
+
+A relatively easy to use json API library utilising `ArduinoJson` for handling JSON  requests from EspAsyncWebserver and other sources for the ESP8266 & ESP32 devices.
+
 
 It is recommended you take a few minutes to read through this information before using it.
 
 > In order to use this library knowledge of working with [ArduinoJson v6](https://arduinojson.org/) is required.
 
-### Create one REST like api usable from multiple sources
+### Create one REST like API usable from multiple sources
 
 * AsyncWebServer
 * AsyncWebSocket
@@ -16,11 +21,11 @@ It is recommended you take a few minutes to read through this information before
 
 ### Why did I bother?
 
-I wanted separation of website design and api, with support for usage via other request sources  such as Mqtt.
+I wanted separation of website design and API, with support for usage via other request sources  such as Mqtt.
 
 #### A bit much?
 
-Perhaps this is a case of over engineering, I don't know, but it helps me to rapidly develop both simple and complex JSON based API interfaces for the ESP8266 & ESP32 devices, maybe it will help you too.
+Perhaps this is a case of over engineering, I don't know, but it helps me to rapidly develop both simple and complex json based API interfaces for the ESP8266 & ESP32 devices, maybe it will help you too.
 
 ### Dependencies
 
@@ -32,7 +37,8 @@ Perhaps this is a case of over engineering, I don't know, but it helps me to rap
 * Each is grouped via a class inheriting from `KoolApiPath`
 * Can restrict char array available methods
 * Can automatically return request uri in response
-* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char data sources.
+
+* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char array data sources
 
 * Supplied with:-
   * Url params in `request->params`
@@ -214,7 +220,7 @@ const char* passw = "sidpassword";
 
 AsyncWebServer server(80);
 
-// Create the api and use "/api" as its base url
+// Create the API and use "/api" as its base url
 KoolApi koolApi("/api");
 
 void setupKoolapi();
@@ -301,7 +307,7 @@ void setupKoolapi() {
 
 ## Sources other than AsyncWebserver
 
-To use the api from other sources you use a `ApiCharRequest`. The json to parse should contain the following keys:-
+To use the API from other sources you use a `ApiCharRequest`. The json to parse should contain the following keys:-
 
 * requestKey - points to the uri handler, defaults to `$_uri`
 * method to call in uppercase - `GET`, `PUT` etc...

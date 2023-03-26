@@ -6,15 +6,15 @@
 
 /**
  * @brief Class to be inherited by endpoints
- * 
+ *
  */
 class KoolApiPath
 {
 public:
   /**
-     * @brief Request info.
-     * Hold the json and params for a request. 
-     */
+   * @brief Request info.
+   * Hold the json and params for a request.
+   */
   ApiRequest *request;
 
   virtual void get(ApiRequest *request, JsonObject out) { request->send(NOT_ALLOWED); };
@@ -25,8 +25,8 @@ public:
 
   /**
    * @brief Bitwise for describing methods used
-   * 
-   * @return int 
+   *
+   * @return int
    */
   virtual int options() { return API_METHOD_UNKNOWN; };
 
@@ -45,13 +45,19 @@ protected:
 
   /**
    * @brief Construct a new Api Path object
-   * 
+   *
    */
-  KoolApiPath(){};
+  KoolApiPath();
+
+  /**
+   * @brief Destroy the Kool Api Path object
+   *
+   */
+  virtual ~KoolApiPath();
 
   /**
    * @brief Construct a new Api Path object
-   * 
+   *
    * @param path Path to trigger
    */
   KoolApiPath(const char *path);
@@ -61,19 +67,19 @@ private:
 
   /**
    * @brief Enpoint path
-   * 
+   *
    */
   const char *_path;
 
   /**
    * @brief Root object for json output
-   * 
+   *
    */
   JsonObject _rootJout;
 
   /**
    * @brief Contains data for handlers
-   * 
+   *
    */
   struct handle_t
   {
@@ -84,20 +90,24 @@ private:
 
   /**
    * @brief Passes request to handler with approriate data available
-   * 
+   *
    * @param h Handler information
    */
   void _handle(const handle_t h);
 
   /**
    * @brief Creates & option element in supplied json object
-   * 
-   * @param jo 
-   * @param bool includeOptions Add OPTIONS to returned list. 
+   *
+   * @param jo
+   * @param bool includeOptions Add OPTIONS to returned list.
    * @return uint8_t Number of options found.
    */
   uint8_t _createOptions(JsonObject jo, bool includeOptions = true);
 };
+
+KoolApiPath::KoolApiPath(){};
+
+KoolApiPath::~KoolApiPath(){};
 
 KoolApiPath::KoolApiPath(const char *path) : _path(path)
 {
