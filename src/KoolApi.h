@@ -189,6 +189,7 @@ protected:
   /**
    * Handler class list
    */
+
   KoolApiPath **_handlerList;
 
   /**

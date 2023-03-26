@@ -5,7 +5,9 @@ Testing only
 
 ## What is it?
 
+
 A relatively easy to use json API library utilising `ArduinoJson` for handling JSON  requests from EspAsyncWebserver and other sources for the ESP8266 & ESP32 devices.
+
 
 It is recommended you take a few minutes to read through this information before using it.
 
@@ -30,23 +32,24 @@ Perhaps this is a case of over engineering, I don't know, but it helps me to rap
 * [ArduinoJson v6](https://arduinojson.org/v6/doc/installation/) - For encoding/decoding json data
 * [EspAsyncWebserver](https://github.com/me-no-dev/ESPAsyncWebServer) - Only if Webserver/Sockets are used.
 
-## About endpdoint Handlers
+## About endpoint Handlers
 
 * Each is grouped via a class inheriting from `KoolApiPath`
 * Can restrict char array available methods
 * Can automatically return request uri in response
-* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char array data sources.
+
+* Automatically generated `405 Method Not Allowed` for methods not defined in endpoint classes or excluded for a char array data sources
 
 * Supplied with:-
   * Url params in `request->params`
-  * Parsed json body in `request->json`
+  * Parsed JSON body in `request->json`
   * A `JsonObject` output to return data
 
 ### Processing
 
 Input data is automatically parsed via `ArduinoJson` and passed to request handlers. Incorrectly formed data is responded to with a `400 Bad Request` error for you.
 
-When a request is processed it is passed to the relevant endpoint class handler. The handler is passed an `ApiRequest` containing the json body and any url params. A `JsonObject` output object is additionally supplied to the handler, which can be optionally used to return data to the client.
+When a request is processed it is passed to the relevant endpoint class handler. The handler is passed an `ApiRequest` containing the JSON body and any url params. A `JsonObject` output object is additionally supplied to the handler, which can be optionally used to return data to the client.
 
 ### Methods available
 
@@ -114,7 +117,8 @@ koolApi.setUriKey("_uri");
 This will add the uri of the response into key `_uri` and place output data in the `data` key, as shown below
 
 ```json
-{"_uri": "sys",
+{
+  "_uri": "sys",
   "data": {
     "hostname": "MYHOST",
     "uptime": 32847

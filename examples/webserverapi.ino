@@ -1,3 +1,8 @@
+/**
+ * This example uses the same API for access
+ * via Serial & Webserver at the same time
+*/
+
 #include "ESPAsyncWebServer.h"
 #include "KoolApi.h"
 
@@ -23,7 +28,8 @@ class HelloApiPath : public KoolApiPath
   // put requests
   void put(ApiRequest *request, JsonObject out)
   {
-    JsonObject json = request->json;
+    auto json = request->json; // data is here
+
     const char *name = json["name"];
 
     if (name)
@@ -37,6 +43,8 @@ class HelloApiPath : public KoolApiPath
   // post requests
   void post(ApiRequest *request, JsonObject out)
   {
+    auto json = request->json; // data is here
+
     out["info"] = "Hello a POST response";
     request->send(OK);
   }
