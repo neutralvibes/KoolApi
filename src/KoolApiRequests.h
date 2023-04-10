@@ -174,7 +174,8 @@ public:
       : _request(request), _isPost(isPost)
   {
   }
-
+  virtual ~ApiAsyncParams(){};
+  
   inline const int length() const override
   {
     return _request->params();
