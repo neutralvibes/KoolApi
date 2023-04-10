@@ -47,13 +47,13 @@ protected:
    * @brief Construct a new Api Path object
    *
    */
-  KoolApiPath();
+  KoolApiPath(){};
 
   /**
    * @brief Destroy the Kool Api Path object
    *
    */
-  virtual ~KoolApiPath();
+  virtual ~KoolApiPath(){};
 
   /**
    * @brief Construct a new Api Path object
@@ -105,9 +105,7 @@ private:
   uint8_t _createOptions(JsonObject jo, bool includeOptions = true);
 };
 
-KoolApiPath::KoolApiPath(){};
 
-KoolApiPath::~KoolApiPath(){};
 
 KoolApiPath::KoolApiPath(const char *path) : _path(path)
 {

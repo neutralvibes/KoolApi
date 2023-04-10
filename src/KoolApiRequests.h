@@ -13,6 +13,8 @@ public:
   {
   }
 
+  virtual ~ApiJsonParams(){}
+
   const int length() const override
   {
     return _params.size();
@@ -68,7 +70,7 @@ public:
    */
   ApiCharRequest(const char *jsonIn, char *output, size_t maxLength);
 
-  ~ApiCharRequest();
+  virtual ~ApiCharRequest();
 
 protected:
   void _dispatch(int code) const override;
@@ -194,7 +196,7 @@ class ApiAsyncWebRequest : public ApiRequest
 {
   
 public:
-  ~ApiAsyncWebRequest();
+  virtual ~ApiAsyncWebRequest();
   ApiAsyncWebRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len);
 
   ApiAsyncWebRequest(AsyncWebServerRequest *request);
@@ -342,7 +344,7 @@ class ApiAsyncWebSocket : public ApiRequest
 
 public:
   ApiAsyncWebSocket(AsyncWebSocket *ws, AsyncWebSocketClient *client, uint8_t *data, size_t len);
-  ~ApiAsyncWebSocket();
+  virtual ~ApiAsyncWebSocket();
 
 protected:
   void _dispatch(int code) const override;
