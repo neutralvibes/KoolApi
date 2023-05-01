@@ -1,6 +1,11 @@
-#pragma once
+#ifndef __KOOLAPIBASES_H__
+#define __KOOLAPIBASES_H__
+
 #include "KoolApiDocuments.h"
 #include "KoolUtils.h"
+
+class KoolApi;
+class KoolApiPath;
 
 typedef enum
 {
@@ -23,19 +28,16 @@ public:
   T code[S];
   const char *text[S];
 
-  const uint8_t length() const
-  {
-    return S;
-  }
+  const uint8_t length() const { return S; }
 
   /**
    * @brief Get the code that matches the supplied char*
-   * 
+   *
    * @param findText text to match
    * @param failCode Code to return on failure.
    * @return T The code matching suppiled findText. failCode if not found.
    */
-  inline T textToCode(const char *findText, const T failCode) const
+  T textToCode(const char *findText, const T failCode) const
   {
     if (findText)
     {
@@ -49,7 +51,7 @@ public:
     return failCode;
   }
 
-  inline const char *codeToText(int code) const
+  const char *codeToText(int code) const
   {
     for (uint8_t i = 0; i < S; ++i)
     {
@@ -62,11 +64,11 @@ public:
 
   /**
    * @brief Searchs code for first with bit set
-   * 
-   * @param bit 
-   * @return const char* 
+   *
+   * @param bit
+   * @return const char*
    */
-  inline const char *bitToText(int bit) const
+  const char *bitToText(int bit) const
   {
     for (uint8_t i = 0; i < S; ++i)
     {
@@ -78,10 +80,10 @@ public:
 
   /**
    * @brief Returns same code if valid. failCode if not.
-   * 
-   * @param code 
-   * @param failCode 
-   * @return T 
+   *
+   * @param code
+   * @param failCode
+   * @return T
    */
   T isValid(T code, T failCode) const
   {
@@ -95,7 +97,7 @@ public:
 };
 
 // Method map
-KoolApiTextMapper<api_method_t, 6> koolApiMethodMap = {
+const KoolApiTextMapper<api_method_t, 6> koolApiMethodMap = {
     {API_METHOD_GET,
      API_METHOD_PUT,
      API_METHOD_POST,
@@ -110,7 +112,7 @@ KoolApiTextMapper<api_method_t, 6> koolApiMethodMap = {
      "OPTIONS"}};
 
 // Error status map
-KoolApiTextMapper<int, 6> _statusMap = {
+const KoolApiTextMapper<int, 6> _statusMap = {
     {400,
      401,
      403,
@@ -125,7 +127,7 @@ KoolApiTextMapper<int, 6> _statusMap = {
      "Not Acceptable"}};
 /**
  * @brief Base class for api params
- * 
+ *
  */
 class ApiParamBase
 {
@@ -141,7 +143,7 @@ public:
 
 /**
  * @brief Base class for api requests
- * 
+ *
  */
 class ApiRequest
 {
@@ -150,19 +152,19 @@ public:
 
   /**
    * @brief The uri of the request
-   * 
+   *
    */
   const char *uri;
 
   /**
    * @brief The request input JsonObject.
-   * 
+   *
    */
   JsonObject json;
 
   /**
    * @brief The request params populated by api handlers.
-   * 
+   *
    */
   ApiParamBase *params = nullptr;
 
@@ -170,32 +172,18 @@ public:
 
   /**
    * @brief Destroy the Api Request object
-   * 
+   *
    */
-  virtual ~ApiRequest()
-  {
-    if (params)
-    {
-      delete params;
-    }
-  }
+  virtual ~ApiRequest() { if (params) delete params; }
 
   /**
 	 * @brief Send code and response data to request client
 	 * If the code is greater than 400 an error response is created and dispatched.
-	 * 
+	 *
 	 * Use the correct codes whether or not output is to webserver client
 	 * @param code HTTP Response code.
 	 */
-  void send(int code)
-  {
-    if (_dispatched)
-      return;
-
-    (code < 400) ? _dispatch(code) : _error(code, true);
-
-    _dispatched = true;
-  }
+  void send(int code);
 
 protected:
   KOOLAPI_create_IN_doc;
@@ -204,51 +192,51 @@ protected:
   DeserializationError _deserializationError;
   /**
    * @brief Called by the processor to parse the request
-   * 
-   * @param requestKey 
-   * @return int error code if any 
+   *
+   * @param requestKey
+   * @return int error code if any
    */
   virtual int parse(const char *urlBase, const char *requestKey) = 0;
 
   /**
    * @brief Whether the request has been dispatched
-   * 
+   *
    */
   bool _dispatched = false;
 
   /**
    * @brief Identifier for the message
-   * 
-   * Maximum is 4294967295 
-   * 
+   *
+   * Maximum is 4294967295
+   *
    */
   uint32_t _id = 0;
 
   /**
    * @brief The request output JsonObject to be populated by api handler.
-   * 
+   *
    */
   JsonObject _out;
 
   /**
    * @brief Decendants send request to destination
-   * 
-   * @param code 
+   *
+   * @param code
    */
   virtual void _dispatch(int code) const = 0;
 
   /**
    * @brief Decendants send OPTIONS to destination if supported
-   * 
-   * @param code 
+   *
+   * @param code
    */
   virtual void _sendOptions() const {};
 
   /**
    * @brief Clears any output add sends an error message with code.
-   * 
-   * 
-   * @param code 
+   *
+   *
+   * @param code
    * @param complete Whether the response should be immediately dispatched. Default true
    */
   void _error(int code, bool complete = true);
@@ -256,27 +244,25 @@ protected:
   private:
   friend class KoolApiPath;
   friend class KoolApi;
-
 };
-void ApiRequest::_error(int code, bool complete) 
+
+
+class ApiJsonParams : public ApiParamBase
 {
-      outdoc.clear();
-    const char *msg = "message";
+  friend class KoolApi;
 
-    if (code)
-    {
-      const char *txt = _statusMap.codeToText(code);
+  JsonObject _params;
 
-      if (_id)
-      {
-        outdoc["id"] = _id;
-      }
+public:
+  ApiJsonParams(JsonObject params) : _params(params) {}
 
-      outdoc["error"] = code;
-      outdoc[msg] = txt ? txt : "Unspecified condition.";
-    }
+  virtual ~ApiJsonParams(){}
 
-    if (complete)
-      _dispatch(code);
-}
+  const int length() const override { return _params.size(); }
 
+  bool has(const char *name) const override { return _params.containsKey(name); }
+
+  String get(const char *name) const override { return _params[name].as<String>(); }
+};
+
+#endif // __KOOLAPIBASES_H__
