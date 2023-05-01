@@ -2,7 +2,6 @@
 #define __KOOLAPI_H__
 
 /*
-
 https://restfulapi.net/resource-naming/
 
 200 OK

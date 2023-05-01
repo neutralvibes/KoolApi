@@ -4,6 +4,8 @@
 #include "KoolApiDocuments.h"
 #include "KoolUtils.h"
 
+#include "ESPAsyncWebServer.h"
+
 class KoolApi;
 class KoolApiPath;
 

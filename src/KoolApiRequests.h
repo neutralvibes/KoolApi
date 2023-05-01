@@ -3,6 +3,8 @@
 
 #include "KoolApiBases.h"
 
+#include "KoolApiRequestsAsyncWebserver.h"
+
 /**
  * @brief KoolApi input from a char array source
  *
@@ -58,6 +60,5 @@ private:
   bool _isConst = false;
 };
 
-#include "KoolApiRequestsAsyncWebserver.h"
 
 #endif // __KOOLAPIREQUESTS_H__

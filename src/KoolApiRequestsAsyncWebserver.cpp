@@ -107,37 +107,7 @@ int ApiAsyncWebRequest::parse(const char *urlBase, const char *requestKey)
   return 0;
 };
 
-class ApiAsyncWebSocket : public ApiRequest
-{
 
-public:
-  ApiAsyncWebSocket(AsyncWebSocket *ws, AsyncWebSocketClient *client, uint8_t *data, size_t len);
-  virtual ~ApiAsyncWebSocket();
-
-protected:
-  void _dispatch(int code) const override;
-  virtual int parse(const char *urlBase, const char *requestKey) override;
-
-private:
-  friend class KoolApi;
-
-  AsyncWebSocket *_ws;
-  AsyncWebSocketClient *_client;
-
-  /**
-   * @brief Data supplied
-   *
-   */
-  uint8_t *_data = nullptr;
-
-  /**
-   * @brief Length of data supplied
-   *
-   */
-  size_t _len = 0;
-};
-
-ApiAsyncWebSocket::~ApiAsyncWebSocket(){};
 
 ApiAsyncWebSocket::ApiAsyncWebSocket(AsyncWebSocket *ws, AsyncWebSocketClient *client, uint8_t *data, size_t len)
     : _ws(ws),
