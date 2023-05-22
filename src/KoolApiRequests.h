@@ -2,7 +2,6 @@
 #define __KOOLAPIREQUESTS_H__
 
 #include "KoolApiBases.h"
-
 #include "KoolApiRequestsAsyncWebserver.h"
 
 /**
@@ -17,14 +16,24 @@ public:
    *
    * @param jsonIn
    */
-  ApiCharRequest(char *jsonIn);
+  ApiCharRequest(char *jsonIn)
+      : _jsonIn(jsonIn),
+        _maxLength(0),
+        _isConst(false)
+  {
+  }
 
   /**
    * @brief Process const char request without output. Uses more memory for const char
    *
    * @param jsonIn
    */
-  ApiCharRequest(const char *jsonIn);
+  ApiCharRequest(const char *jsonIn)
+      : _jsonInConst(jsonIn),
+        _maxLength(0),
+        _isConst(true)
+  {
+  }
 
   /**
    * @brief Process char request placing any output in `output`
@@ -33,7 +42,13 @@ public:
    * @param output output char[]
    * @param maxLength size of output char[]
    */
-  ApiCharRequest(char *jsonIn, char *output, size_t maxLength);
+  ApiCharRequest(char *jsonIn, char *output, size_t maxLength)
+      : _jsonIn(jsonIn),
+        _output(output),
+        _maxLength(maxLength),
+        _isConst(false)
+  {
+  }
 
   /**
    * @brief Process const char request placing any output in `output`
@@ -42,9 +57,15 @@ public:
    * @param output output char[]
    * @param maxLength size of output char[]
    */
-  ApiCharRequest(const char *jsonIn, char *output, size_t maxLength);
+  ApiCharRequest(const char *jsonIn, char *output, size_t maxLength)
+      : _jsonInConst(jsonIn),
+        _output(output),
+        _maxLength(maxLength),
+        _isConst(true)
+  {
+  }
 
-  virtual ~ApiCharRequest();
+  virtual ~ApiCharRequest(){};
 
 protected:
   void _dispatch(int code) const override;
@@ -59,6 +80,5 @@ private:
   size_t _maxLength = 0;
   bool _isConst = false;
 };
-
 
 #endif // __KOOLAPIREQUESTS_H__

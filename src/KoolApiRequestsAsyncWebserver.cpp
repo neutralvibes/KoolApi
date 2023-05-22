@@ -12,7 +12,7 @@ void ApiAsyncWebRequest::_dispatch(int code) const
   response->addHeader("Access-Control-Allow-Origin", "*");
   response->addHeader("Access-Control-Allow-Headers", "*");
   response->addHeader("Access-Control-Allow-Credentials", "true");
-  
+
   response->setCode(code);
   serializeJson(outdoc, *response);
   _request->send(response);
@@ -20,17 +20,14 @@ void ApiAsyncWebRequest::_dispatch(int code) const
 
 void ApiAsyncWebRequest::_sendOptions() const
 {
-  bool _cors = true;
   uint8_t optsLen = outdoc["options"].size();
   uint8_t pos = 0;
 
   auto len = measureJson(outdoc);
-  AsyncResponseStream *response = _request->beginResponseStream("application/json", len);
+  AsyncResponseStream *resp = _request->beginResponseStream("application/json", len);
 
-  if (_cors)
-  {
-    response->addHeader("Access-Control-Allow-Origin", "*");
-  }
+  resp->addHeader("Access-Control-Allow-Origin", "*");
+  resp->addHeader("Access-Control-Allow-Headers", "*");
 
   if (optsLen)
   {
@@ -40,21 +37,19 @@ void ApiAsyncWebRequest::_sendOptions() const
     for (uint8_t i = 0; i < optsLen; ++i)
     {
       strcat(optsBuff, outdoc["options"][i]);
+      
       ++pos;
+
       if (pos < optsLen)
         strcat(optsBuff, ", ");
     }
 
-    const char *acceptHeader = (_cors) ? "Access-Control-Allow-Methods" : "Accept";
-
-    response->addHeader(acceptHeader, optsBuff);
+    resp->addHeader("Access-Control-Allow-Methods", optsBuff);
   }
 
-  response->addHeader("Cache-Control", "no-store");
-
-  response->setCode(200);
-  serializeJson(outdoc, *response);
-  _request->send(response);
+  resp->setCode(200);
+  serializeJson(outdoc, *resp);
+  _request->send(resp);
 }
 
 int ApiAsyncWebRequest::parse(const char *urlBase, const char *requestKey)

@@ -1,37 +1,6 @@
 
 #include "KoolApiRequests.h"
 
-ApiCharRequest::ApiCharRequest(char *jsonIn) : _jsonIn(jsonIn),
-                                               _maxLength(0),
-                                               _isConst(false)
-
-{
-}
-
-ApiCharRequest::ApiCharRequest(const char *jsonIn) : _jsonInConst(jsonIn),
-                                                     _maxLength(0),
-                                                     _isConst(true)
-
-{
-}
-
-ApiCharRequest::ApiCharRequest(char *jsonIn, char *output, size_t maxLength) : _jsonIn(jsonIn),
-                                                                               _output(output),
-                                                                               _maxLength(maxLength),
-                                                                               _isConst(false)
-
-{
-}
-
-ApiCharRequest::ApiCharRequest(const char *jsonIn, char *output, size_t maxLength) : _jsonInConst(jsonIn),
-                                                                                     _output(output),
-                                                                                     _maxLength(maxLength),
-                                                                                     _isConst(true)
-{
-}
-
-ApiCharRequest::~ApiCharRequest() {}
-
 void ApiCharRequest::_dispatch(int code) const
 {
   if (_maxLength && !outdoc.isNull()) serializeJson(outdoc, _output, _maxLength);

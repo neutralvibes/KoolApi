@@ -177,9 +177,8 @@ void KoolApi::registerWith(AsyncWebServer &server, void (*logfunc)(AsyncWebServe
 
               if (request->method() == HTTP_OPTIONS)
               {
-                auto resp = request->beginResponse(200);
-                resp->addHeader("Access-Control-Allow-Methods", "*");
-                request->send(resp);
+                ApiAsyncWebRequest apiRequest(request);
+                process(apiRequest);
               } },
             NULL, [this, logfunc](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
             {
