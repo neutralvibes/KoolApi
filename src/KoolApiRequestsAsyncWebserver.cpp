@@ -8,8 +8,11 @@ void ApiAsyncWebRequest::_dispatch(int code) const
   auto len = measureJson(outdoc);
 
   AsyncResponseStream *response = _request->beginResponseStream("application/json", len);
-  // response->addHeader("Access-Control-Allow-Origin", "*");
   response->addHeader("Cache-Control", "no-store");
+  response->addHeader("Access-Control-Allow-Origin", "*");
+  response->addHeader("Access-Control-Allow-Headers", "*");
+  response->addHeader("Access-Control-Allow-Credentials", "true");
+  
   response->setCode(code);
   serializeJson(outdoc, *response);
   _request->send(response);
@@ -91,8 +94,6 @@ int ApiAsyncWebRequest::parse(const char *urlBase, const char *requestKey)
   return 0;
 };
 
-
-
 void ApiAsyncWebSocket::_dispatch(int code) const
 {
   auto len = measureJson(outdoc);
@@ -134,7 +135,6 @@ int ApiAsyncWebSocket::parse(const char *urlBase, const char *requestKey)
 
   this->params = new ApiJsonParams(jParse["params"].as<JsonObject>());
 
-  // std::unique_ptr<ApiJsonParams> p (new ApiJsonParams(jParse["params"].as<JsonObject>()));
   return 0;
 };
 
