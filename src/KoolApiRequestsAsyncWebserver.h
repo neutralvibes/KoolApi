@@ -35,10 +35,20 @@ class ApiAsyncWebRequest : public ApiRequest
 {
 
 public:
-  virtual ~ApiAsyncWebRequest();
-  ApiAsyncWebRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len);
+  virtual ~ApiAsyncWebRequest(){};
 
-  ApiAsyncWebRequest(AsyncWebServerRequest *request);
+  ApiAsyncWebRequest(AsyncWebServerRequest *request) : _request(request),
+                                                       _isBody(false)
+  {
+  }
+
+  ApiAsyncWebRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len)
+      : _request(request),
+        _data(data),
+        _len(len),
+        _isBody(true)
+  {
+  }
 
 protected:
   void _dispatch(int code) const override;
@@ -77,8 +87,12 @@ class ApiAsyncWebSocket : public ApiRequest
 {
 
 public:
-  ApiAsyncWebSocket(AsyncWebSocket *ws, AsyncWebSocketClient *client, uint8_t *data, size_t len);
-  virtual ~ApiAsyncWebSocket() {};
+  ApiAsyncWebSocket(AsyncWebSocket *ws, AsyncWebSocketClient *client, uint8_t *data, size_t len)
+      : _ws(ws), _client(client), _data(data), _len(len)
+  {
+  }
+
+  virtual ~ApiAsyncWebSocket(){};
 
 protected:
   void _dispatch(int code) const override;

@@ -170,8 +170,11 @@ void KoolApi::registerWith(AsyncWebServer &server, void (*logfunc)(AsyncWebServe
 
   server.on(
             _urlBase,
-            HTTP_ANY, [](AsyncWebServerRequest *request)
+            HTTP_ANY, [this, logfunc](AsyncWebServerRequest *request)
             {
+              if (logfunc)
+                logfunc(request, "");
+
               if (request->method() == HTTP_OPTIONS)
               {
                 auto resp = request->beginResponse(200);

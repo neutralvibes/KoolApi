@@ -2,22 +2,6 @@
 #include "KoolApiRequestsAsyncWebserver.h"
 #ifdef _ESPAsyncWebServer_H_
 
-ApiAsyncWebRequest::ApiAsyncWebRequest(AsyncWebServerRequest *request, uint8_t *data, size_t len)
-    : _request(request),
-      _data(data),
-      _len(len),
-      _isBody(true)
-{
-}
-
-ApiAsyncWebRequest::ApiAsyncWebRequest(AsyncWebServerRequest *request) : _request(request),
-                                                                         _isBody(false)
-{
-}
-
-ApiAsyncWebRequest::~ApiAsyncWebRequest()
-{
-}
 
 void ApiAsyncWebRequest::_dispatch(int code) const
 {
@@ -108,14 +92,6 @@ int ApiAsyncWebRequest::parse(const char *urlBase, const char *requestKey)
 };
 
 
-
-ApiAsyncWebSocket::ApiAsyncWebSocket(AsyncWebSocket *ws, AsyncWebSocketClient *client, uint8_t *data, size_t len)
-    : _ws(ws),
-      _client(client),
-      _data(data),
-      _len(len)
-{
-}
 
 void ApiAsyncWebSocket::_dispatch(int code) const
 {
