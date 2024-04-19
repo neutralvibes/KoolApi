@@ -53,6 +53,12 @@ public:
     return failCode;
   }
 
+  /**
+   * @brief Translate a code to text
+   *
+   * @param code
+   * @return const char*
+   */
   const char *codeToText(int code) const
   {
     for (uint8_t i = 0; i < S; ++i)

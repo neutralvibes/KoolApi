@@ -11,6 +11,15 @@
 class ApiCharRequest : public ApiRequest
 {
 public:
+
+  /**
+   * @brief Whether or not to simplify keys "uri", "method" and "body"
+   *
+   * Translates to: {"U": method+"|"+uri, "B": body, "P": params}
+   *
+   */
+  bool useShortKeys = false;
+
   /**
    * @brief Process char request without output. Uses less memory
    *
