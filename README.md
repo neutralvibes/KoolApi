@@ -307,38 +307,63 @@ void setupKoolapi() {
 
 ## Sources other than AsyncWebserver
 
-To use the API from other sources you use a `ApiCharRequest`. The json to parse should contain the following keys:-
+To use the API from other sources you use a `ApiCharRequest`. The JSON to parse should contain the following keys:-
 
 * requestKey - points to the uri handler, defaults to `$_uri`
 * method to call in uppercase - `GET`, `PUT` etc...
-* `body` - the json data to act ON
+* `body` - the JSON data to act ON
 
 The data example *below* will send the request to the registered endpoint `"testuri/id"`, and call the `put` method in the handler class.
 
-```json
+```JSON
 { "$_uri": "testuri/id", "method": "PUT", "body": {"id": 5, "name": "Jack Jones"} }
 ```
 
-### Process a request from a char array
+### Shorten Keys
+
+To simplify these requests a little, `ApiCharRequest` has a variable `useShortKeys` that if you set to true, will shorten some keys required.
+
+```c++
+ApiCharRequest apiCharRequest(jsonIn);
+apiCharRequest.useShortKeys = true // turns on short key mode
+```
+
+The two requests below accomplish the same task; one with and one without `useShortKeys` enabled. When you switch, only those root keys for requests are valid for that transaction.
+
+```JSON
+// Example 1) Normal key mode (default)
+{"method":"PATCH","$_uri":"lamp", "body":{"state": 1}}
+
+// Example 2) useShortKeys mode.
+{"U":"PATCH|lamp","B":{"state": 1}}
+```
+
+As you see in the short key example above, short key mode combines the method & uri keys, with the values separated by a `|`, under a single key called `U`,
+while the `body` key has been shortened to `B`. `P` is used for extra parameters.
+
+### Examples
+
+#### Process a request from a char array
 
 ```c++
   // jsonIn is your data from Serial/MQTT etc
-  ApiCharRequest charRequest(jsonIn);
-  koolApi.process(charRequest);
+  ApiCharRequest apiCharRequest(jsonIn);
+  koolApi.process(apiCharRequest);
 ```
 
-### Process a request from a char array with output
+#### Process a request from a char array with output
 
 ```c++
   // jsonIn is your data from Serial/MQTT etc
   int outMaxLength = 500;
   char output[outMaxLength]; // Make large enough!
 
-  ApiCharRequest charRequest(jsonIn, output, outMaxLength);
-  koolApi.process(charRequest);
+  ApiCharRequest apiCharRequest(jsonIn, output, outMaxLength);
+  apiCharRequest.useShortKeys = true
+  koolApi.process(apiCharRequest);
 ```
 
-### Basic Stream/Serial processing
+#### Basic Stream/Serial processing
 
 This basic example shows reading a LF terminated string from Serial and returning the response.
 
@@ -350,8 +375,9 @@ This basic example shows reading a LF terminated string from Serial and returnin
 
     String input = Serial.readStringUntil('\n');
     {
-      ApiCharRequest charRequest(input.c_str(), output, outMaxLength);
-      koolApi.process(charRequest);
+      ApiCharRequest apiCharRequest(input.c_str(), output, outMaxLength);
+      apiCharRequest.useShortKeys = true
+      koolApi.process(apiCharRequest);
       Serial.println(output);
     }
   }
