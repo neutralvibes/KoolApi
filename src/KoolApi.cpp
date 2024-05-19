@@ -65,10 +65,10 @@ void KoolApi::process(ApiRequest &request, int methodsAccepted)
   {
     request._error(errParseCode);
 
-    if (request._deserializationError)
-    {
-      Serial.printf("Json Error: %s\n", request._deserializationError.c_str());
-    }
+    // if (request._deserializationError)
+    // {
+    //   Serial.printf("Json Error: %s\n", request._deserializationError.c_str());
+    // }
 
     return;
   }
@@ -175,7 +175,9 @@ void KoolApi::registerWith(AsyncWebServer &server, void (*logfunc)(AsyncWebServe
               if (logfunc)
                 logfunc(request, "");
 
-              if (request->method() == HTTP_OPTIONS)
+              auto m = request->method();
+
+              if (m == HTTP_OPTIONS || m == HTTP_DELETE)
               {
                 ApiAsyncWebRequest apiRequest(request);
                 process(apiRequest);
