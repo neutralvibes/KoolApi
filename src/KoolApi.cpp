@@ -159,7 +159,7 @@ bool KoolApi::apiFilter(const AsyncWebServerRequest *r)
 void KoolApi::registerWith(AsyncWebServer &server, void (*logfunc)(AsyncWebServerRequest *request, const char *msg))
 {
   server.on(
-            _urlBase, HTTP_GET, [this, logfunc](AsyncWebServerRequest *request)
+            _urlBase, HTTP_GET | HTTP_DELETE, [this, logfunc](AsyncWebServerRequest *request)
             {
               if (logfunc)
                 logfunc(request, "");
@@ -175,9 +175,7 @@ void KoolApi::registerWith(AsyncWebServer &server, void (*logfunc)(AsyncWebServe
               if (logfunc)
                 logfunc(request, "");
 
-              auto m = request->method();
-
-              if (m == HTTP_OPTIONS || m == HTTP_DELETE)
+              if (request->method() == HTTP_OPTIONS)
               {
                 ApiAsyncWebRequest apiRequest(request);
                 process(apiRequest);
