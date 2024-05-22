@@ -45,6 +45,21 @@ public:
   }
 
   /**
+   * @brief Process const char request without output
+   *
+   * @param jsonIn
+   * @param maxInLength Length of jsonIn
+   */
+  ApiCharRequest(const char *jsonIn, size_t maxInLength)
+      : _jsonInConst(jsonIn),
+        _maxLength(0),
+        _maxInLength(maxInLength),
+        _isConst(true)
+  {
+  }
+
+
+  /**
    * @brief Process char request placing any output in `output`
    *
    * @param jsonIn json
@@ -58,6 +73,25 @@ public:
         _isConst(false)
   {
   }
+
+
+  /**
+   * @brief Process char request placing any output in `output`
+   *
+   * @param jsonIn json
+   * @param output output char[]
+   * @param maxInLength length of jsonIn
+   * @param maxLength size of output char[]
+   */
+  ApiCharRequest(char *jsonIn, char *output, size_t maxInLength, size_t maxLength)
+      : _jsonIn(jsonIn),
+        _output(output),
+        _maxLength(maxLength),
+        _maxInLength(maxInLength),
+        _isConst(false)
+  {
+  }
+
 
   /**
    * @brief Process const char request placing any output in `output`
@@ -87,6 +121,7 @@ private:
   char *_jsonIn;
   char *_output;
   size_t _maxLength = 0;
+  int _maxInLength = 0;
   bool _isConst = false;
 };
 

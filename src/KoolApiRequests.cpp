@@ -13,7 +13,14 @@ int ApiCharRequest::parse(const char *urlBase, const char *requestKey)
   const char * bodyTxt = "body";
   const char * paramsTxt = "params";
 
-  _deserializationError = (_isConst) ? deserializeJson(doc, _jsonInConst) : deserializeJson(doc, _jsonIn);
+  if (_isConst) {
+    _deserializationError = deserializeJson(doc, _jsonInConst);
+  }
+  else
+  {
+    _deserializationError = (_maxInLength) ? deserializeJson(doc, _jsonIn, _maxInLength) :
+                                        deserializeJson(doc, _jsonIn);
+  }
 
   if (_deserializationError || doc.isNull() || !doc.is<JsonObject>())
   {
